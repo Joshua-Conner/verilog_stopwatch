@@ -1,0 +1,5 @@
+# Directories
+/sim
+
+# Files
+*.v.bak

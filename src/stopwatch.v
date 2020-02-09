@@ -1,22 +1,32 @@
 module stopwatch (
   input clkIn,
   input rstIn,
-  input [3:0] testIn,
   output [7:0] aSegOut,
-  output dpOut,
-  output [6:0] cSegOut
-);
+  output [7:0] cSegOut);
 
-  seven_seg_display U0 (
+  wire [3:0] muxSelData;
+  wire [2:0] muxSel;
+
+  mux_controller DATA_SEL_CONTROLLER (
     .clkIn(clkIn),
     .rstIn(rstIn),
-    .selIn(1'b1),
-    .bcdIn(testIn),
-    .enDpIn(1'b0),
-    .enDisplayOut(),
-    .ledSegOut(cSegOut),
-    .ledDpOut());
+    .channe0In(0),
+    .channe1In(1),
+    .channe2In(2),
+    .channe3In(3),
+    .channe4In(4),
+    .channe5In(5),
+    .channe6In(6),
+    .channe7In(7),
+    .selOut(muxSel),
+    .channelOut(muxSelData));
 
-  assign aSegOut = 8'h00;
-  assign dpOut = 1'b1;
+  seven_seg_display SSEG_CONTROLLER (
+    .clkIn(clkIn),
+    .rstIn(rstIn),
+    .selIn(muxSel),
+    .bcdIn(muxSelData),
+    .aSegOut(aSegOut),
+    .cSegOut(cSegOut));
+
 endmodule

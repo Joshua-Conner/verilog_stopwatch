@@ -1,8 +1,14 @@
 module stopwatch (
   input clkIn,
   input rstIn,
+  input btnRunIn,
+  input btnPauseIn,
+  input btnClearIn,
   output [7:0] aSegOut,
   output [7:0] cSegOut);
+
+  wire enCounter;
+  wire clrCounter;
 
   wire [3:0] milliBcdOne;
   wire [3:0] milliBcdTen;
@@ -16,9 +22,20 @@ module stopwatch (
   wire [3:0] muxSelData;
   wire [2:0] muxSel;
 
+  stopwatch_fsm FSM (
+    .clkIn(clkIn),
+    .rstIn(rstIn),
+    .btnRunIn(btnRunIn),
+    .btnPauseIn(btnPauseIn),
+    .btnClearIn(btnClearIn),
+    .enCounterOut(enCounter),
+    .clrCounterOut(clrCounter));
+
   stopwatch_counter COUNTER (
     .clkIn(clkIn),
     .rstIn(rstIn),
+    .enCounterIn(enCounter),
+    .clrCounterIn(clrCounter),
     .milliBcdOneOut(milliBcdOne),
     .milliBcdTenOut(milliBcdTen),
     .milliBcdHundredOut(milliBcdHundred),

@@ -2,6 +2,8 @@ module stopwatch_counter
   (
     input clkIn,
     input rstIn,
+    input enCounterIn,
+    input clrCounterIn,
     output reg [3:0] milliBcdOneOut,
     output reg [3:0] milliBcdTenOut,
     output reg [3:0] milliBcdHundredOut,
@@ -25,7 +27,7 @@ module stopwatch_counter
   integer cnt;
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       cnt <= 0;
       incrMilliBcdOneCnt <= 1'b0;
     end
@@ -38,13 +40,15 @@ module stopwatch_counter
         cnt <= 0;
       end
       else begin
-        cnt <= cnt + 1;
+        if (enCounterIn == 1'b1) begin
+          cnt <= cnt + 1;
+        end
       end
     end
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       milliBcdOneOut     <= 0;
       incrMilliBcdTenCnt <= 1'b0;
     end
@@ -65,7 +69,7 @@ module stopwatch_counter
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       milliBcdTenOut     <= 0;
       incrMilliBcdHundredCnt <= 1'b0;
     end
@@ -86,7 +90,7 @@ module stopwatch_counter
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       milliBcdHundredOut     <= 0;
       incrSecondBcdOneCnt <= 1'b0;
     end
@@ -107,7 +111,7 @@ module stopwatch_counter
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       secondBcdOneOut     <= 0;
       incrSecondBcdTenCnt <= 1'b0;
     end
@@ -128,7 +132,7 @@ module stopwatch_counter
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       secondBcdTenOut     <= 0;
       incrMinuteBcdOneCnt <= 1'b0;
     end
@@ -149,7 +153,7 @@ module stopwatch_counter
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       minuteBcdOneOut     <= 0;
       incrMinuteBcdTenCnt <= 1'b0;
     end
@@ -170,7 +174,7 @@ module stopwatch_counter
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       minuteBcdTenOut     <= 0;
       incrHourBcdOneCnt <= 1'b0;
     end
@@ -191,7 +195,7 @@ module stopwatch_counter
   end
 
   always @ (posedge clkIn) begin
-    if (rstIn == 1'b1) begin
+    if (rstIn == 1'b1 || clrCounterIn == 1'b1) begin
       hourBcdOneOut <= 0;
     end
     else begin

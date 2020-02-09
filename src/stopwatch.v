@@ -7,7 +7,7 @@ module stopwatch (
   wire [3:0] muxSelData;
   wire [2:0] muxSel;
 
-  mux_controller DATA_SEL_CONTROLLER (
+  mux_controller #(.REFRESH_RATE(480)) DATA_SEL_CONTROLLER (
     .clkIn(clkIn),
     .rstIn(rstIn),
     .channe0In(0),
